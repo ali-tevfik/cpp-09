@@ -15,11 +15,9 @@ int main(int argc, char *argv[])
         deq.push_back(std::stoi(argv[i]));
     }
     
-    for (int y = 0; y < argc - 1; y++)
-    {
-        std::cout << "vec " << vec[y] << std::endl;
-        std::cout << "deq " << deq[y] << std::endl;
-    }
+    PmergeMe merge(vec,deq);
+
+
     
 
 }

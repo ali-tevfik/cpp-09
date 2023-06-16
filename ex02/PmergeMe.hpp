@@ -6,14 +6,19 @@
 #include <vector>
 #include <deque>
 
-class PmergeMe
-{
-private:
-    /* data */
+// template<typename T>
+class PmergeMe {
 public:
-    PmergeMe(/* args */);
+    PmergeMe(std::vector<int>& vec, std::deque<int>& deq);
     ~PmergeMe();
+
+private:
+    void deqMerge(std::deque<int>& deq, int l, int m, int r);
+    void vecMerge(std::vector<int>& vec, int l, int m, int r);
+    void deqSort(std::deque<int>& deq, int begin, int end);
+    void vecSort(std::vector<int>& vec, int begin, int end);
 };
+
 
 
 
