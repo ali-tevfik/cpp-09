@@ -23,9 +23,10 @@ public:
 
     std::map<std::string, double> _data;
     void readData();
-    // void findRate(std::string date, std::string value);
+    void findRate(std::string date);
     bool isValidDate(const std::string& date_str);
-
+    std::string oneDayBefore(std::string firstDay);
+    
     //getter setter
     float getTotal(){return _total;};
     void setTotal(float total){_total = total;};

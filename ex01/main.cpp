@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
         {
             if (numbers.size() < 2)
             {
-                std::cout << "Errror: invalid argument" << std::endl;
+                std::cout << "Error" << std::endl;
                 return 1;
             }
             
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
             for (int i = 0; i < token[i]; i++)
             {
                 if(!isdigit(token[i])){
-                    std::cout << "Argument not int!" << std::endl;
+                    std::cout << "Error" << std::endl;
                     return 1;
                 }
             }
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
         }
     }
     if (numbers.size() != 1){
-        std::cout << "Error: invalid error" << std::endl;
+        std::cout << "Error" << std::endl;
         return 1;
     }
     std::cout << numbers.top() << std::endl;

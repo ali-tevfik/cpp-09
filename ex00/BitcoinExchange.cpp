@@ -117,28 +117,40 @@ BitcoinExchange::BitcoinExchange(std::string fileName)
 {
     std::ifstream input_file(fileName.c_str());
     readData();
-    std::cout << "DATE IS " << "\n\t" << _data["2021-07-28"] << std::endl;
     
     std::string line;
 
-    //first line
+    //check first line
     std::getline(input_file, line);
-    std::cout << "first line: " << std::endl << "\t" << line << std::endl;
-    
+    std::istringstream iss(line);
+    std::string date,value, anything;
+    char seperator;
+    if((iss >> date >> seperator >> value >> anything) || seperator != '|' || date.compare("date") || value.compare("value") || anything.compare(""))
+    {
+        std::cout << "Error: Invalid first line." << std::endl;
+        return;
+    }
+
+
     while (std::getline(input_file, line)) {
         std::istringstream iss(line);
-        std::string date,value;
-        char seperator;
+        
         if(!(iss >> date >> seperator >> value) || seperator != '|')
 			std::cout << "Error: bad input => " << date << std::endl;
-        if (seperator !=  '|' || !isValidDate(date) || !isValidValue(value))
+        else if ( !isValidDate(date))
         {
-           std::cout << "ERROR:" << std::endl << "\t" << date << std::endl;
+           std::cout << "Error: Invalid date [" << date << "]" << std::endl;
+        }
+        else if(!isValidValue(value))
+        {
+            std::cout << "Error: not a positive number." << std::endl;
+        }
+        else if(std::stod(value) > 1000){
+            std::cout << "Error: too large a number." << std::endl;
         }
         else {
-            std::cout << "date is " << date << " value is : " << value << std::endl;
-            // findRate(date, value);
-
+            findRate(date);
+            std::cout << date << " => " << value << " = " << getTotal() * std::stod(value) << std::endl;
         }
         
     }
@@ -147,11 +159,44 @@ BitcoinExchange::BitcoinExchange(std::string fileName)
 
 }
 
-// void BitcoinExchange::findRate(std::string date, std::string value)
-// {
-//     std::map<std::string, double>::iterator it = _data.find(date);
 
-// }
+std::string BitcoinExchange::oneDayBefore(std::string firstDay){
+ // std::string to tm
+    std::tm timeStruct = {};
+    std::istringstream iss(firstDay);
+    iss >> std::get_time(&timeStruct, "%Y-%m-%d");
+
+    // convert std::tm'i std::chrono::system_clock::time_point
+    std::chrono::system_clock::time_point date = std::chrono::system_clock::from_time_t(std::mktime(&timeStruct));
+
+    // one days = 24h
+    std::chrono::hours oneDay(24);
+
+    //calculate one day before
+    std::chrono::system_clock::time_point oneDayBefore = date - oneDay;
+
+    //chrono convert tm
+    std::time_t oneDayBeforeTime = std::chrono::system_clock::to_time_t(oneDayBefore);
+    std::tm* oneDayBeforeTm = std::localtime(&oneDayBeforeTime);
+
+    // date format to string
+    char buffer[80];
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", oneDayBeforeTm);
+    std::string oneDayBeforeDateString(buffer);
+
+    return oneDayBeforeDateString;
+}
+
+void BitcoinExchange::findRate(std::string date)
+{
+    std::map<std::string, double>::iterator iter = _data.find(date);
+    if (iter != _data.end()) {
+        setTotal(_data[date]);
+    } else {
+        findRate(oneDayBefore(date));
+    }
+
+}
 
 BitcoinExchange::~BitcoinExchange()
 {
