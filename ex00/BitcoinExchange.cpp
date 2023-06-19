@@ -20,8 +20,6 @@ void BitcoinExchange::readData() {
         lastDay = date;
     }
     
-    std::cout << "firs day " << firstDay << std::endl;
-    std::cout << "last day " << lastDay << std::endl;
 }
 
 

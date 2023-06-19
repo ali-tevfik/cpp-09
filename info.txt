@@ -1,0 +1,6 @@
+i use:
+    first question  => map
+    second question => stack
+    third question  => vector and deq
+
+    All containers => https://cplusplus.com/reference/stl/
