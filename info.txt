@@ -4,3 +4,18 @@ i use:
     third question  => vector and deq
 
     All containers => https://cplusplus.com/reference/stl/
+
+
+
+
+Vector
+-------
+Vector works as a dynamic array with contiguous memory layout, providing random access to elements. Due to its sequential memory placement, it offers fast access to elements in sorted 
+order. When using the "insert merge" algorithm for sorting, you might need to create two separate vectors and then merge them later, which can be costly in terms of time and memory.
+
+Deque
+---------
+Deque, on the other hand, is a double-ended queue data structure that allows fast access to elements both from the front and the back. Deque has a more complex structure compared to 
+vector. It creates individual nodes for each data element, and these nodes are linked to each other. When using the "insert merge" algorithm for sorting, the dynamic nature of deque 
+might result in faster insertion and merging operations.
+
